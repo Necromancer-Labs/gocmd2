@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/chzyer/readline"
+	"github.com/google/shlex"
 	"github.com/spf13/cobra"
 	"github.com/Necromancerlabs/gocmd2/pkg/module"
 	"github.com/Necromancerlabs/gocmd2/pkg/module/core"
@@ -168,12 +169,15 @@ func (s *Shell) Run() {
 			continue
 		}
 
-		// Parse the line and execute the command using Cobra
-		args := strings.Split(line, " ")
-		s.rootCmd.SetArgs(args)
-
-		err = s.rootCmd.Execute()
+		// Parse the line using shlex (handles quoted strings)
+		args, err := shlex.Split(line)
 		if err != nil {
+			fmt.Printf("Parse error: %v\n", err)
+			continue
+		}
+
+		s.rootCmd.SetArgs(args)
+		if err := s.rootCmd.Execute(); err != nil {
 			fmt.Printf("Error: %v\n", err)
 		}
 
@@ -184,9 +188,12 @@ func (s *Shell) Run() {
 
 // ExecuteCommand runs a command programmatically
 func (s *Shell) ExecuteCommand(command string) error {
-	args := strings.Split(command, " ")
+	args, err := shlex.Split(command)
+	if err != nil {
+		return fmt.Errorf("parse error: %w", err)
+	}
 	s.rootCmd.SetArgs(args)
-	err := s.rootCmd.Execute()
+	err = s.rootCmd.Execute()
 	s.rootCmd.SetArgs(nil)
 	return err
 }
