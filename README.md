@@ -1,4 +1,15 @@
 ![gocmd2](./gocmd2-banner.png)
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Necromancer_Labs-Tools-8A2BE2?style=for-the-badge&labelColor=374151" alt="Necromancer Labs">
+  <img src="https://img.shields.io/badge/Focus-Go_Utilities-8A2BE2?style=for-the-badge&labelColor=374151" alt="Focus">
+  <img src="https://img.shields.io/badge/Status-Active_Dev-22c55e?style=for-the-badge&labelColor=374151" alt="Status">
+  <br>
+  <a href="https://github.com/Necromancer-Labs"><img src="https://img.shields.io/badge/GitHub-Necromancer--Labs-8A2BE2?style=for-the-badge&labelColor=374151&logo=github&logoColor=white" alt="GitHub"></a>
+  <a href="https://github.com/Necromancer-Labs/embbridge"><img src="https://img.shields.io/badge/Used_By-embbridge-8A2BE2?style=for-the-badge&labelColor=374151" alt="embbridge"></a>
+  <a href="https://necromancer-labs.github.io/gocmd2/"><img src="https://img.shields.io/badge/Docs-Read-0ea5e9?style=for-the-badge&labelColor=374151" alt="Docs"></a>
+</p>
+
 # gocmd2
 
 A Go-based interactive shell framework inspired by Python's [cmd2](https://github.com/python-cmd2/cmd2) library. Gocmd2 provides a modular, extensible framework for building interactive command-line applications with rich features.
