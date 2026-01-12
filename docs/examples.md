@@ -1,14 +1,6 @@
----
-layout: default
-title: Examples
-nav_order: 6
----
-
 # Examples
 
 Practical examples demonstrating gocmd2 features and patterns.
-
----
 
 ## Timer Application
 
@@ -136,7 +128,7 @@ Timer reset!
 Goodbye!
 ```
 
----
+
 
 ## Calculator Module
 
@@ -227,7 +219,7 @@ func (m *CalculatorModule) GetCommands() []*cobra.Command {
 }
 ```
 
----
+
 
 ## File Operations Module
 
@@ -317,7 +309,7 @@ func (m *FilesModule) GetCommands() []*cobra.Command {
 }
 ```
 
----
+
 
 ## Multi-Module Application
 
@@ -361,7 +353,7 @@ Type 'help' for available commands.
 }
 ```
 
----
+
 
 ## Command with Flags
 
@@ -397,7 +389,7 @@ func (m *MyModule) GetCommands() []*cobra.Command {
 Processing myfile.txt with count 5
 ```
 
----
+
 
 ## Testing Commands
 

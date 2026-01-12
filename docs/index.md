@@ -1,85 +1,34 @@
----
-layout: default
-title: Home
-nav_order: 1
----
-
 # gocmd2
 
-A Go-based interactive shell framework inspired by Python's [cmd2](https://github.com/python-cmd2/cmd2) library.
+**Interactive Shell Framework** — cmd2, but for Go.
 
-gocmd2 provides a modular, extensible framework for building interactive command-line applications with rich features like command auto-completion, history management, and a module-based architecture.
+A modular, extensible framework for building interactive command-line applications with tab completion, history, and runtime module management.
 
----
+## Why gocmd2?
 
-## Features
+Python has `cmd2`. Go had nothing comparable. gocmd2 gives you the same developer experience with Go's performance and deployment simplicity.
 
-| Feature | Description |
-|---------|-------------|
-| **Modular Architecture** | Create and register command modules to organize functionality |
-| **Built on Cobra** | Uses [Spf13 Cobra](https://github.com/spf13/cobra) for robust command parsing |
-| **Tab Completion** | Command auto-completion via [Readline](https://github.com/chzyer/readline) |
-| **Command History** | Persistent command history between sessions |
-| **Runtime Module Control** | Enable/disable modules at runtime |
-| **Shared State** | Thread-safe state sharing between modules |
-| **Exit Handlers** | Register cleanup functions on shell exit |
+- **Modular architecture** — organize commands into enable/disable modules
+- **Built on Cobra** — leverage the most popular Go CLI framework
+- **Tab completion** — out of the box via readline
+- **Shared state** — thread-safe state sharing between modules
 
----
+## Quick Links
 
-## Quick Example
-
-```go
-package main
-
-import (
-    "fmt"
-    "os"
-
-    "github.com/Necromancerlabs/gocmd2/pkg/shell"
-)
-
-func main() {
-    sh, err := shell.NewShell("myshell", "Welcome!")
-    if err != nil {
-        fmt.Printf("Error: %v\n", err)
-        os.Exit(1)
-    }
-    defer sh.Close()
-
-    sh.Run()
-}
-```
-
----
-
-## Documentation
-
-- [Getting Started](getting-started) - Installation and basic usage
-- [Modules](modules) - Creating and managing command modules
-- [Shell API](shell-api) - Complete API reference
-- [Core Commands](core-commands) - Built-in commands reference
-- [Examples](examples) - Code examples and patterns
-
----
-
-## Installation
-
-```bash
-go get github.com/Necromancerlabs/gocmd2
-```
-
----
+- [Quick Start](quickstart.md) — Get up and running
+- [Modules](modules.md) — Creating command modules
+- [Shell API](shell-api.md) — Full API reference
+- [Core Commands](core-commands.md) — Built-in commands
+- [Examples](examples.md) — Code examples
 
 ## Dependencies
 
 | Package | Purpose |
 |---------|---------|
 | [spf13/cobra](https://github.com/spf13/cobra) | Command framework |
-| [chzyer/readline](https://github.com/chzyer/readline) | Interactive input with history |
-| [google/shlex](https://github.com/google/shlex) | Shell-like argument parsing |
-
----
+| [chzyer/readline](https://github.com/chzyer/readline) | Interactive input |
+| [google/shlex](https://github.com/google/shlex) | Argument parsing |
 
 ## License
 
-See the [LICENSE](https://github.com/Necromancer-Labs/gocmd2/blob/main/LICENSE) file for details.
+MIT — [Necromancer Labs](https://github.com/Necromancer-Labs)

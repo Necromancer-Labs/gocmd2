@@ -1,14 +1,6 @@
----
-layout: default
-title: Modules
-nav_order: 3
----
-
 # Modules
 
 Modules are the primary way to extend gocmd2 functionality. Each module provides a set of related commands that can be enabled or disabled at runtime.
-
----
 
 ## The CommandModule Interface
 
@@ -27,7 +19,6 @@ type CommandModule interface {
 }
 ```
 
----
 
 ## Creating a Module
 
@@ -89,7 +80,6 @@ func (m *MyModule) GetCommands() []*cobra.Command {
 }
 ```
 
----
 
 ## Registering Modules
 
@@ -105,7 +95,6 @@ sh.RegisterModule(anothermodule.New())
 sh.Run()
 ```
 
----
 
 ## Module Lifecycle
 
@@ -115,7 +104,6 @@ sh.Run()
 4. **Runtime**: Module can be enabled/disabled by users
 5. **Cleanup**: Exit handlers run when shell closes
 
----
 
 ## Using Shared State
 
@@ -145,7 +133,6 @@ func (m *MyModule) GetCommands() []*cobra.Command {
 }
 ```
 
----
 
 ## Dynamic UI Updates
 
@@ -173,7 +160,6 @@ func (m *MyModule) GetCommands() []*cobra.Command {
 }
 ```
 
----
 
 ## Module Enable/Disable
 
@@ -187,7 +173,6 @@ Users control modules at runtime:
 
 The core module cannot be disabled.
 
----
 
 ## Best Practices
 
@@ -198,7 +183,6 @@ The core module cannot be disabled.
 5. **Handle Errors Gracefully**: Don't crash the shell on errors
 6. **Clean Up Resources**: Use exit handlers for cleanup
 
----
 
 ## Example: Complete Module
 

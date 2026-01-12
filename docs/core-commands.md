@@ -1,16 +1,8 @@
----
-layout: default
-title: Core Commands
-nav_order: 5
----
-
 # Core Commands
 
 The core module is automatically registered with every gocmd2 shell. It provides essential commands for shell operation and module management.
 
 The core module cannot be disabled.
-
----
 
 ## help
 
@@ -44,7 +36,7 @@ Available Commands (by module):
   mymodule (use 'enable mymodule' to activate)
 ```
 
----
+
 
 ## exit
 
@@ -61,7 +53,7 @@ Exit the shell gracefully.
 
 **Note:** You can also exit with `Ctrl+D` (EOF).
 
----
+
 
 ## modules
 
@@ -83,7 +75,7 @@ Available modules:
   utils    [disabled]
 ```
 
----
+
 
 ## enable
 
@@ -110,7 +102,7 @@ Module 'timer' enabled
 **Errors:**
 - "Module not found" if module doesn't exist
 
----
+
 
 ## disable
 
@@ -142,7 +134,7 @@ Module 'timer' disabled
 - "Cannot disable core module"
 - "Module not found" if module doesn't exist
 
----
+
 
 ## Command Parsing
 
@@ -171,7 +163,7 @@ single quoted
 nested "quotes"
 ```
 
----
+
 
 ## Keyboard Shortcuts
 
@@ -188,7 +180,7 @@ nested "quotes"
 | `Ctrl+W` | Delete word backward |
 | `Ctrl+U` | Clear line |
 
----
+
 
 ## Command History
 

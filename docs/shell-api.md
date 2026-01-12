@@ -1,14 +1,6 @@
----
-layout: default
-title: Shell API
-nav_order: 4
----
-
-# Shell API Reference
+# Shell API
 
 The Shell API provides methods for modules to interact with the shell. It's passed to modules during initialization.
-
----
 
 ## ShellAPI Interface
 
@@ -34,7 +26,7 @@ type ShellAPI interface {
 }
 ```
 
----
+
 
 ## Module Management Methods
 
@@ -60,7 +52,7 @@ if err != nil {
 }
 ```
 
----
+
 
 ### DisableModule
 
@@ -83,7 +75,7 @@ func (s *Shell) DisableModule(moduleName string) error
 err := m.shell.DisableModule("timer")
 ```
 
----
+
 
 ### IsModuleEnabled
 
@@ -106,7 +98,7 @@ if m.shell.IsModuleEnabled("timer") {
 }
 ```
 
----
+
 
 ### GetModules
 
@@ -127,7 +119,7 @@ for _, name := range modules {
 }
 ```
 
----
+
 
 ### GetEnabledModules
 
@@ -140,7 +132,7 @@ func (s *Shell) GetEnabledModules() []string
 **Returns:**
 - `[]string` - Slice of enabled module names
 
----
+
 
 ### GetRootCmd
 
@@ -157,7 +149,7 @@ func (s *Shell) GetRootCmd() *cobra.Command
 - Adding subcommands dynamically
 - Accessing command tree
 
----
+
 
 ### GetModuleCommands
 
@@ -170,7 +162,7 @@ func (s *Shell) GetModuleCommands() map[string][]*cobra.Command
 **Returns:**
 - `map[string][]*cobra.Command` - Map of module names to command slices
 
----
+
 
 ## State Management Methods
 
@@ -195,7 +187,7 @@ m.shell.SetState("config", map[string]string{"mode": "debug"})
 m.shell.SetState("start_time", time.Now())
 ```
 
----
+
 
 ### GetState
 
@@ -223,7 +215,7 @@ if ok {
 
 **Note:** Type assertions are required when retrieving values.
 
----
+
 
 ## UI Methods
 
@@ -245,7 +237,7 @@ m.shell.SetPrompt("[debug] > ")
 m.shell.SetPrompt("(5s elapsed) > ")
 ```
 
----
+
 
 ### GetPrompt
 
@@ -258,7 +250,7 @@ func (s *Shell) GetPrompt() string
 **Returns:**
 - `string` - Current prompt
 
----
+
 
 ### PrintAlert
 
@@ -276,7 +268,7 @@ func (s *Shell) PrintAlert(message string)
 m.shell.PrintAlert("Operation completed successfully")
 ```
 
----
+
 
 ## Shell Methods
 
@@ -298,7 +290,7 @@ func NewShell(name string, banner string) (*Shell, error)
 - `*Shell` - New shell instance
 - `error` - Error if initialization fails
 
----
+
 
 ### RegisterModule
 
@@ -311,7 +303,7 @@ func (s *Shell) RegisterModule(module module.CommandModule)
 **Parameters:**
 - `module` - Module implementing `CommandModule` interface
 
----
+
 
 ### Run
 
@@ -321,7 +313,7 @@ Start the interactive shell loop.
 func (s *Shell) Run()
 ```
 
----
+
 
 ### Close
 
@@ -331,7 +323,7 @@ Close the shell and release resources.
 func (s *Shell) Close()
 ```
 
----
+
 
 ### ExecuteCommand
 
@@ -344,7 +336,7 @@ func (s *Shell) ExecuteCommand(command string)
 **Parameters:**
 - `command` - Command string to execute
 
----
+
 
 ### OnExit
 
@@ -357,7 +349,7 @@ func (s *Shell) OnExit(fn func())
 **Parameters:**
 - `fn` - Function to call on exit
 
----
+
 
 ### SetHistoryFile
 
@@ -370,7 +362,7 @@ func (s *Shell) SetHistoryFile(path string)
 **Parameters:**
 - `path` - Path to history file
 
----
+
 
 ## Thread Safety
 
