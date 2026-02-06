@@ -15,6 +15,7 @@ Python has `cmd2`. Go had nothing comparable. gocmd2 gives you the same develope
 
 ## Quick Links
 
+- [GitHub Repository](https://github.com/Necromancer-Labs/gocmd2) — Source code and README
 - [Quick Start](quickstart.md) — Get up and running
 - [Modules](modules.md) — Creating command modules
 - [Shell API](shell-api.md) — Full API reference

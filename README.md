@@ -12,23 +12,14 @@
 
 # gocmd2
 
-A Go-based interactive shell framework inspired by Python's [cmd2](https://github.com/python-cmd2/cmd2) library. Gocmd2 provides a modular, extensible framework for building interactive command-line applications with rich features.
+Drop-in interactive shell framework for Go. If you're building a CLI tool that needs a REPL — a debugger, a network tool, a device shell — gocmd2 handles the boring parts so you can focus on your commands.
 
-## Features
-
-- **Modular Architecture**: Easily create and register command modules to organize functionality
-- **Built on Cobra**: Uses [Spf13 Cobra](https://github.com/spf13/cobra) for command parsing and execution
-- **Command Auto-Completion**: Tab completion for commands via [Readline](https://github.com/chzyer/readline)
-- **Command History**: Persistent command history between sessions
-- **Module System**: Enable/disable command modules at runtime
-- **Shared State**: Built-in mechanism for sharing state between modules
-- **Extensible**: Simple API for adding custom commands and modules
-- **Exit Handlers**: Register functions to be called on shell exit
+You get tab completion, command history, module management, and shared state out of the box. Just define your commands with [Cobra](https://github.com/spf13/cobra) and register them.
 
 ## Installation
 
 ```bash
-go get github.com/Necromancerlabs/gocmd2
+go get github.com/Necromancer-Labs/gocmd2
 ```
 
 ## Quick Start
@@ -40,157 +31,127 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Necromancerlabs/gocmd2/pkg/shell"
-	"github.com/spf13/cobra"
+	"github.com/Necromancer-Labs/gocmd2/pkg/shell"
 )
 
 func main() {
-	// Create a new shell
-	sh, err := shell.NewShell(
-		"myshell",                         // Shell name
-		"Welcome to My Interactive Shell!" // Banner message
-	)
+	sh, err := shell.NewShell("myshell", "Welcome!")
 	if err != nil {
-		fmt.Printf("Error initializing shell: %v\n", err)
+		fmt.Printf("Error: %v\n", err)
 		os.Exit(1)
 	}
 	defer sh.Close()
 
-	// Run the shell
 	sh.Run()
 }
 ```
 
-This creates a basic shell with core commands like `help`, `exit`, and module management commands.
+That's it. Run it and you get:
 
-## Creating Custom Modules
+```
+Welcome!
+> help
+Available Commands (by module):
 
-Extend functionality by implementing the `module.CommandModule` interface:
+[core]
+  exit      Exit the shell
+  modules   List all modules
+  enable    Enable a module
+  disable   Disable a module
+  help      Display this help message
+
+> exit
+```
+
+Tab completion, history, `Ctrl+R` search — all wired up automatically.
+
+## Adding Your Own Commands
+
+Implement three methods and you have a module:
 
 ```go
-package main
-
-import (
-	"fmt"
-	"time"
-
-	"github.com/Necromancerlabs/gocmd2/pkg/shellapi"
-	"github.com/spf13/cobra"
-)
-
-// TimerModule provides time-related commands
-type TimerModule struct {
+type GreetModule struct {
 	shell shellapi.ShellAPI
 }
 
-func NewTimerModule() *TimerModule {
-	return &TimerModule{}
-}
+func (m *GreetModule) Name() string { return "greet" }
 
-func (m *TimerModule) Name() string {
-	return "timer"
-}
+func (m *GreetModule) Initialize(s shellapi.ShellAPI) { m.shell = s }
 
-// Initialize is called when the module is registered
-func (m *TimerModule) Initialize(s shellapi.ShellAPI) {
-	m.shell = s
-	m.shell.SetState("start_time", time.Now())
-}
-
-func (m *TimerModule) GetCommands() []*cobra.Command {
-	commands := []*cobra.Command{}
-
-	// Add a "time" command
-	timeCmd := &cobra.Command{
-		Use:   "time",
-		Short: "Show elapsed time since shell started",
-		Run: func(cmd *cobra.Command, args []string) {
-			startTimeValue, ok := m.shell.GetState("start_time")
-			if !ok {
-				fmt.Println("Start time not found in state")
-				return
-			}
-
-			startTime := startTimeValue.(time.Time)
-			elapsed := time.Since(startTime)
-			fmt.Printf("Shell has been running for %s\n", elapsed.Round(time.Second))
+func (m *GreetModule) GetCommands() []*cobra.Command {
+	return []*cobra.Command{
+		{
+			Use:   "hello [name]",
+			Short: "Say hello",
+			Run: func(cmd *cobra.Command, args []string) {
+				name := "World"
+				if len(args) > 0 {
+					name = args[0]
+				}
+				fmt.Printf("Hello, %s!\n", name)
+			},
 		},
 	}
-	commands = append(commands, timeCmd)
-
-	return commands
 }
 ```
 
-Register your module in your shell application:
+Register it and your command is live:
 
 ```go
-// Register our custom timer module
-timerModule := NewTimerModule()
-sh.RegisterModule(timerModule)
+sh.RegisterModule(&GreetModule{})
+sh.Run()
 ```
 
-## Running the Examples
+```
+> hello
+Hello, World!
+> hello Hacker
+Hello, Hacker!
+```
 
-The repository includes examples that demonstrate gocmd2's features and usage patterns:
+See the [full module guide](https://necromancer-labs.github.io/gocmd2/modules.md) for shared state, dynamic prompts, and more.
 
-### Timer Example
+## What You Get For Free
 
-The `examples/simple` directory contains a working example of a timer module that demonstrates:
-- Creating a custom module
-- Using shared state between commands
-- Dynamically changing the shell prompt
-- Setting up exit handlers
+- **Tab completion** for all registered commands
+- **Command history** that persists between sessions
+- **Module system** — enable/disable command groups at runtime
+- **Shared state** — thread-safe key/value store across modules
+- **Exit handlers** — cleanup on `exit` or `Ctrl+D`
+- **Shell-like parsing** — quoted strings, escaped characters
 
-To run the example:
+## Running the Example
 
 ```bash
-# Clone the repository
-git clone https://github.com/Necromancerlabs/gocmd2.git
+git clone https://github.com/Necromancer-Labs/gocmd2.git
 cd gocmd2
-
-# Run the simple example
 go run examples/simple/main.go
 ```
 
-Once the shell starts, you can try these commands:
-- `help` - List available commands
-- `time` - Show elapsed time since the shell started
-- `reset` - Reset the timer
-- `exit` - Exit the shell (with cleanup)
-
-This example shows how to create interactive shells with custom commands and shared state management.
-
-## Core Features
-
-### Module Management
-
-Users can enable/disable modules at runtime:
-
 ```
-> modules            # List all modules
-> enable mymodule    # Enable a specific module
-> disable mymodule   # Disable a specific module
+Welcome to the Timer Example!
+> time
+Shell running for 5s
+(5s) > reset
+Timer reset!
+> modules
+  core   [enabled]
+  timer  [enabled]
+> disable timer
+> enable timer
+> exit
+Goodbye!
 ```
 
-### Shell API
+## Documentation
 
-The Shell API provides methods for modules to interact with the shell:
+Full docs at **[necromancer-labs.github.io/gocmd2](https://necromancer-labs.github.io/gocmd2/)**
 
-- **State Management**: `SetState()`, `GetState()`
-- **UI Methods**: `SetPrompt()`, `GetPrompt()`, `PrintAlert()`
-- **Module Management**: `EnableModule()`, `DisableModule()`, `IsModuleEnabled()`
-
-### Exit Handling
-
-Register cleanup functions to run when the shell exits:
-
-```go
-sh.OnExit(func() {
-    fmt.Println("Cleaning up resources...")
-    // Cleanup code here
-})
-```
+- [Quick Start](https://necromancer-labs.github.io/gocmd2/quickstart.md) — Get running fast
+- [Modules](https://necromancer-labs.github.io/gocmd2/modules.md) — Build command modules
+- [Shell API](https://necromancer-labs.github.io/gocmd2/shell-api.md) — Full API reference
+- [Core Commands](https://necromancer-labs.github.io/gocmd2/core-commands.md) — Built-in commands
+- [Examples](https://necromancer-labs.github.io/gocmd2/examples.md) — Code examples
 
 ## License
 
